@@ -1,12 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
-import { MovieService } from './movie.service';
 
-@Controller('movie')
+@Controller({ path: 'movies', host: ['api.teacoder.ru', 'api.google.com'] })
 export class MovieController {
-  constructor(private readonly movieService: MovieService) {}
-
   @Get()
-  test() {
-    return this.movieService.test();
+  findAll() {
+    return [
+      {
+        title: 'Fight Club',
+      },
+      {
+        title: 'The Matrix',
+      },
+      {
+        title: 'The Dark Knight',
+      },
+    ];
   }
 }

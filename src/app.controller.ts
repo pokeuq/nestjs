@@ -9,9 +9,8 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-
   @Get('sup')
   getWhatsUp(): string {
-    return this.appService.getWhatsUp();
+    return this.appService.getSup();
   }
 }
