@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { MovieDto } from './dto/create-movie.dto';
+import { CreateMovieDto } from './dto/movie.dto';
 
 @Controller('movies')
 export class MovieController {
@@ -26,12 +26,12 @@ export class MovieController {
   }
 
   @Post()
-  create(@Body() createMovieDto: MovieDto) {
+  create(@Body() createMovieDto: CreateMovieDto) {
     return this.movieService.create(createMovieDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() createMovieDto: MovieDto) {
+  update(@Param('id') id: string, @Body() createMovieDto: CreateMovieDto) {
     return this.movieService.update(id, createMovieDto);
   }
 
