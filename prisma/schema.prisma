@@ -18,6 +18,10 @@ model Movie {
 
   genre Genre @default(DRAMA)
 
+  posterId String @unique @map("poster_id")
+  poster MoviePoster @relation(fields: [posterId], references: [id])
+
+
   reviews Review[] @relation("movie_reviews")
   actors Actor[] @relation("movie_actors")
   
@@ -40,6 +44,19 @@ model Review {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("reviews")
+}
+
+model MoviePoster {
+  id String @id @default(uuid())
+
+  url String
+
+  movie Movie?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("movie_posters")
 }
 
 model Actor {
