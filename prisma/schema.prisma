@@ -19,6 +19,7 @@ model Movie {
   genre Genre @default(DRAMA)
 
   reviews Review[] @relation("movie_reviews")
+  actors Actor[] @relation("movie_actors")
   
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -39,6 +40,19 @@ model Review {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("reviews")
+}
+
+model Actor {
+  id String @id @default(uuid())
+
+  name String
+
+  movies Movie[] @relation("movie_actors")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("actor")
 }
 
 enum Genre {
