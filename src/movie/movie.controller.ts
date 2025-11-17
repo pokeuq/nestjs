@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
 } from '@nestjs/common';
@@ -13,7 +12,7 @@ import { CreateMovieDto } from './dto/movie.dto';
 
 @Controller('movies')
 export class MovieController {
-  constructor(private readonly movieService: MovieService) {}
+  constructor(private readonly movieService: MovieService) { }
 
   @Get()
   findAll() {
@@ -35,13 +34,13 @@ export class MovieController {
     return this.movieService.update(id, createMovieDto);
   }
 
-  @Patch(':id')
-  updateIsAvailable(
-    @Param('id') id: string,
-    @Body('isAvailable') isAvailable: boolean,
-  ) {
-    return this.movieService.updateIsAvailable(id, isAvailable);
-  }
+  // @Patch(':id')
+  // updateIsAvailable(
+  //   @Param('id') id: string,
+  //   @Body('isAvailable') isAvailable: boolean,
+  // ) {
+  //   return this.movieService.updateIsAvailable(id, isAvailable);
+  // }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
