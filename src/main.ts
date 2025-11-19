@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  app.use(logger);
+  app.use(logger); // add logger
 
   await app.listen(3000);
 }
