@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  UseFilters,
   UseGuards,
   UseInterceptors,
   UsePipes,
@@ -12,6 +13,7 @@ import { SrtingToLowercasePipe } from './common/pipes/string-to-lowercase.pipe';
 import { AuthGuard } from './common/guards/auth.guards';
 import { UserAgent } from './common/decorators/user-agent.decorators';
 import { ResponseInterseptor } from './common/interseptors/response.interseptor';
+import { AllExeptionsFilter } from './common/filters/all-exeptions.filter';
 
 @Controller()
 export class AppController {
@@ -29,6 +31,7 @@ export class AppController {
   }
 
   @UseGuards(AuthGuard)
+  @UseFilters(AllExeptionsFilter)
   @Get('@me')
   getProfile(@UserAgent() userAgent: string) {
     return {
