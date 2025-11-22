@@ -4,12 +4,14 @@ import {
   Get,
   Post,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { SrtingToLowercasePipe } from './common/pipes/string-to-lowercase.pipe';
 import { AuthGuard } from './common/guards/auth.guards';
 import { UserAgent } from './common/decorators/user-agent.decorators';
+import { ResponseInterseptor } from './common/interseptors/response.interseptor';
 
 @Controller()
 export class AppController {
