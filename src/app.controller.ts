@@ -1,5 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { AppService } from './app.service';
+import { SrtingToLowercasePipe } from './common/pipes/string-to-lowercase.pipe';
+import { AuthGuard } from './common/guards/auth.guards';
+import { UserAgent } from './common/decorators/user-agent.decorators';
 
 @Controller()
 export class AppController {
@@ -9,8 +19,21 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-  @Get('sup')
-  getWhatsUp(): string {
-    return this.appService.getSup();
+
+  @UsePipes(SrtingToLowercasePipe)
+  @Post()
+  create(@Body('title') title: string) {
+    return `movie ${title}`;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('@me')
+  getProfile(@UserAgent() userAgent: string) {
+    return {
+      id: 1,
+      username: 'pokeuq',
+      email: 'pokeuq@gmail.com',
+      userAgent,
+    };
   }
 }
