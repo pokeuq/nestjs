@@ -1,98 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## Отчёт по лабораторной работе
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### 1. Цель работы
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Освоить базовые приёмы контейнеризации серверного приложения на Node.js (NestJS) и развертывания стека приложения и базы данных PostgreSQL с помощью Docker и docker-compose.
 
-## Description
+### 2. Используемые технологии и инструменты
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Язык и фреймворк**: TypeScript, NestJS.
+- **База данных**: PostgreSQL.
+- **ORM**: Prisma.
+- **Контейнеризация**: Docker, docker-compose.
+- **Среда выполнения**: Node.js.
 
-## Project setup
+### 3. Архитектура проекта и Docker-стека
 
-```bash
-$ npm install
-```
+Проект представляет собой REST API на NestJS, который использует базу данных PostgreSQL. База данных разворачивается в контейнере Docker, приложение подключается к ней по сети.
 
-## Compile and run the project
+Текущая конфигурация `docker-compose.yml`:
 
-```bash
-# development
-$ npm run start
+- сервис `postgres` на образе `postgres:latest`;
+- проброс порта **5433:5432** (клиент подключается по порту 5433 на хосте);
+- данные БД сохраняются в томе `postgres_data`;
+- используется отдельная сеть `nestjs-course`.
 
-# watch mode
-$ npm run start:dev
+Приложение NestJS по умолчанию слушает порт **3000** (`http://localhost:3000`).
 
-# production mode
-$ npm run start:prod
-```
+### 4. Методика выполнения задания
 
-## Run tests
+1. **Изучить теоретическую часть** по Docker и docker-compose (понятия: образ, контейнер, том, сеть, docker-compose файл).
+2. **Установить необходимое ПО**:
+   - Docker Engine / Docker Desktop;
+   - Node.js и npm (для запуска NestJS-приложения);
+   - при необходимости WSL2 (для Windows).
+3. **Клонировать репозиторий с проектом**:
+   ```bash
+   git clone <url-репозитория>
+   cd nestjs
+   ```
+4. **Установить зависимости проекта**:
+   ```bash
+   npm install
+   ```
+5. **Создать файл `.env`** на основе примера (если есть) и задать переменные окружения для PostgreSQL, в том числе `POSTGRES_USER` и `POSTGRES_PASSWORD`, которые используются в `docker-compose.yml`.
+6. **Поднять контейнер с PostgreSQL через docker-compose**:
+   ```bash
+   docker compose up -d
+   ```
+   После запуска контейнера БД будет доступна по адресу `localhost:5433`.
+7. **Выполнить инициализацию/миграции БД (при необходимости)** с помощью Prisma:
+   ```bash
+   npm run db
+   ```
+   или соответствующей команды для применения миграций.
+8. **Запустить NestJS-приложение** в режиме разработки:
+   ```bash
+   npm run dev
+   ```
+9. **Проверить работоспособность API**:
+   - открыть `http://localhost:3000` или соответствующие эндпоинты;
+   - убедиться, что приложение успешно подключается к PostgreSQL (по логам и/или через тестовые запросы).
 
-```bash
-# unit tests
-$ npm run test
+### 5. Ход выполнения работы
 
-# e2e tests
-$ npm run test:e2e
+1. Настроен файл `docker-compose.yml` для запуска PostgreSQL в отдельном контейнере с томом `postgres_data` и пробросом порта 5433.
+2. Создан файл `.env` с параметрами подключения к БД (пользователь, пароль, имя БД и т.д.).
+3. Установлены зависимости NestJS-приложения через `npm install`.
+4. Запущен контейнер с БД командой `docker compose up -d`, проверен статус контейнера (`docker ps`).
+5. Выполнена инициализация схемы базы данных при помощи Prisma.
+6. Запущено приложение с помощью `npm run dev`.
+7. Выполнены тестовые HTTP-запросы к API (через браузер, curl или Postman), подтверждено успешное подключение к базе данных.
 
-# test coverage
-$ npm run test:cov
-```
+При обращении к `http://localhost:3000` (или к соответствующим маршрутам API) приложение возвращает корректные ответы, использующие данные из PostgreSQL.
 
-## Deployment
+### 6. Инструкция по запуску проекта
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+1. Установить Docker и Node.js.
+2. Клонировать репозиторий и перейти в каталог проекта.
+3. Установить зависимости:
+   ```bash
+   npm install
+   ```
+4. Создать и заполнить `.env` (переменные для PostgreSQL и приложения).
+5. Поднять базу данных:
+   ```bash
+   docker compose up -d
+   ```
+6. Применить миграции/инициализацию БД (если используется):
+   ```bash
+   npm run db
+   ```
+7. Запустить приложение NestJS:
+   ```bash
+   npm run dev
+   ```
+8. Открыть в браузере или клиенте:
+   - `http://localhost:3000` – базовый адрес API.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 7. Скриншоты
+![фото1](looklike.jpg)

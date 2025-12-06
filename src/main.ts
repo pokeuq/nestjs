@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalGuards(new AuthGuard());
+  // app.useGlobalGuards(new AuthGuard());
   app.useGlobalInterceptors(new ResponseInterseptor());
   app.useGlobalFilters(new AllExeptionsFilter());
 
